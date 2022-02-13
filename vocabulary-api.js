@@ -107,7 +107,7 @@ class VocAPI {
                 })
                 .then(res => {
                     let doc = parseDocument(res.response);
-                    require('fs').writeFileSync('test/lastResponse.html', res.response);
+                    require('fs').writeFileSync('lastResponse.html', res.response);
                     if (doc.querySelector('body').classList.contains('top-section-account')) { 
                         // has classes 'loggedin' or 'loggedout'
                         this.loggedIn = true;
@@ -177,40 +177,7 @@ class VocAPI {
      */
     getDefinition(word) 
     {
-    // response format 
-    // primary meanings (per group) are the first sense of every ordinal
-    //     {
-    //         "word": "string",
-    //         "definition": "string", // primary definition (as given by the meta description tag)
-    //         "description": "string", // the long format description unique to Vocabulary.com 
-    //         "audioURL": "string", // of the form https://audio.vocab.com/1.0/us/C/12RWPXAD427B5.mp3
-    //                                 // with C/.... being the code, in data-audio on the element
-    //                                 // document.querySelector('.audio')
-    //         "meanings": [ // groups of meanings
-    //                 [       // meaning group
-    //                      [  // ordinal group
-    //                             { // sense 
-    //                                     "definition": "string", 
-    //                                     "pos": "string",          // part of speech: noun
-    //                                     "synonyms": [ "string" ], 
-    //                                     "subtypes": [             // subtypes of the word
-    //                                             {
-    //                                                     "word": ["string"],   // subtype synonyms
-    //                                                     "definition": "string" 
-    //                                             }
-    //                                     ],
-    //                                     "supertypes":  [                      // subtypes of the word
-    //                                             {
-    //                                                     "word": ["string"],   // supertype synonyms
-    //                                                     "definition": "string" 
-    //                                             }
-    //                                     ],
-    //                             }
-    //                         ]
-    //                 ]
-    //         ]
-    // }
-
+    
         return this.http('GET', `${this.URLBASE}/dictionary/${word}`, {
             referer: `${this.URLBASE}/dictionary`,
             responseType: 'document'
@@ -321,14 +288,14 @@ class VocAPI {
                 ap: 0.19866072 },
          */
         return this.http('GET', `${this.URLBASE}/lists/byprofile.json`, {
-                referer: `${this.URLBASE}/dictionary/hacker`,
+                //referer: `${this.URLBASE}/dictionary/hacker`,
                 responseType: 'json'
             }).then((res) => {
                 // options: name, createdate, wordcount, activitydate TODO: make options
                 let sortBy = "modifieddate";
                 if (res.status === 200) {
                     const lists = res.response.result.wordlists
-                        .filter(wl => wl.owner)
+                        //.filter(wl => wl.owner)
                         .sort((a,b) => a[sortBy] > b[sortBy] ? -1 : 1); // high to low
                     
                     // fill cache with names
